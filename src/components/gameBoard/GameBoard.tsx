@@ -1,99 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import HelpCenter from "../helpCenter/HelpCenter";
+import Tile from "./tile/Tile";
+import InitialGameBoard from "../../api/initialGameBoard.json";
 
 const GameBoard = () => {
+  const [boardData, setBoardData] = useState<number[][]>([]);
+
+  useEffect(() => {
+    //Load the game board
+    setBoardData(InitialGameBoard.initialBoard);
+  }, []);
+
   return (
     <div id="board" className="boardItem">
       <HelpCenter />
       <div id="gameBoard">
-        <div className="row">
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-        </div>
-        <div className="row">
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-        </div>
-        <div className="row">
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-        </div>
-        <div className="row">
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile">
-            <div className="disc white"></div>
+        {boardData.map((row) => (
+          <div className="row">
+            {row.map((tileValue) => (
+              <Tile value={tileValue} />
+            ))}
           </div>
-          <div className="tile">
-            <div className="disc black"></div>
-          </div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-        </div>
-        <div className="row">
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile">
-            <div className="disc black"></div>
-          </div>
-          <div className="tile">
-            <div className="disc white"></div>
-          </div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-        </div>
-        <div className="row">
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-        </div>
-        <div className="row">
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-        </div>
-        <div className="row">
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-          <div className="tile"></div>
-        </div>
+        ))}
       </div>
     </div>
   );
