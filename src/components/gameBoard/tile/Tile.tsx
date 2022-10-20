@@ -1,27 +1,19 @@
 import React from "react";
 import { ITileValue } from "./models/ITileValue";
-import { PlayerEnum } from "../../../models/playerEnum";
+import { validateTile, setDiscType } from "./util/Validation";
 
-const Tile: React.FC<ITileValue> = ({ value }) => {
-  const validateTile = (validate: number) => {
-    return (
-      validate == PlayerEnum.PLAYER_BLACK || validate == PlayerEnum.PLAYER_WHITE
-    );
-  };
-
-  const setDiscType = (value: number) => {
-    switch (value) {
-      case PlayerEnum.PLAYER_BLACK:
-        return "black";
-      case PlayerEnum.PLAYER_WHITE:
-        return "white";
-      default:
-        return "";
-    }
+const Tile: React.FC<ITileValue> = ({
+  value,
+  xCoord,
+  yCoord,
+  setTile: setNewTile,
+}) => {
+  const setTile = () => {
+    setNewTile(xCoord, yCoord);
   };
 
   return (
-    <div className="tile">
+    <div className="tile" onClick={setTile}>
       {validateTile(value) && (
         <div className={`disc ${setDiscType(value)}`}></div>
       )}
