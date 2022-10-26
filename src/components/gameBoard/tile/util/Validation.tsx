@@ -16,3 +16,7 @@ export const setDiscType = (value: number) => {
       return "";
   }
 };
+
+export const setValidTileCallout = (isValidPlacement: boolean): String => {
+  return isValidPlacement ? "isValid" : "";
+};

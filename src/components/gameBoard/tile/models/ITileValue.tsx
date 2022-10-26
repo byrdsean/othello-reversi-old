@@ -1,5 +1,7 @@
+import { TileMetaData } from "../../models/TileMetaData";
+
 export interface ITileValue {
-  value: number;
+  data: TileMetaData;
   xCoord: number;
   yCoord: number;
   setTile: (x: number, y: number) => void;

@@ -1,9 +1,13 @@
 import React from "react";
 import { ITileValue } from "./models/ITileValue";
-import { validateTile, setDiscType } from "./util/Validation";
+import {
+  validateTile,
+  setDiscType,
+  setValidTileCallout,
+} from "./util/Validation";
 
 const Tile: React.FC<ITileValue> = ({
-  value,
+  data,
   xCoord,
   yCoord,
   setTile: setNewTile,
@@ -13,9 +17,12 @@ const Tile: React.FC<ITileValue> = ({
   };
 
   return (
-    <div className="tile" onClick={setTile}>
-      {validateTile(value) && (
-        <div className={`disc ${setDiscType(value)}`}></div>
+    <div
+      onClick={setTile}
+      className={`tile ${setValidTileCallout(data.isValidPlacement)}`}
+    >
+      {validateTile(data.value) && (
+        <div className={`disc ${setDiscType(data.value)}`}></div>
       )}
     </div>
   );
