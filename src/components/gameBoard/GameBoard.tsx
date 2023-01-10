@@ -6,6 +6,7 @@ import { PlayerEnum } from "../../models/playerEnum";
 import { expandBoard, flattenBoard } from "./util/BoardUtilities";
 import { validateTile } from "./tile/util/Validation";
 import { TileMetaData } from "./models/TileMetaData";
+import ScoreBoard from "../scoreboard/ScoreBoard";
 
 const GameBoard = () => {
   const [boardData, setBoardData] = useState<TileMetaData[]>([]);
@@ -20,10 +21,16 @@ const GameBoard = () => {
       fullBoard[y][x].value = currentPlayer;
       setBoardData(flattenBoard(fullBoard));
     }
+
+    setCurrentPlayer(
+      currentPlayer === PlayerEnum.PLAYER_WHITE
+        ? PlayerEnum.PLAYER_BLACK
+        : PlayerEnum.PLAYER_WHITE
+    );
   };
 
   useEffect(() => {
-    setCurrentPlayer(PlayerEnum.PLAYER_BLACK);
+    setCurrentPlayer(PlayerEnum.PLAYER_WHITE);
 
     //Initialize the 2d game board to store metadata for each tile
     let initialBoard = InitialGameBoard.initialBoard.map<TileMetaData[]>(
@@ -40,24 +47,27 @@ const GameBoard = () => {
   }, []);
 
   return (
-    <div id="board" className="boardItem">
-      <HelpCenter />
-      <div id="gameBoard">
-        {expandBoard(boardData).map((row, rIndex) => (
-          <div key={`r${rIndex}`} className="row">
-            {row.map((tileData, cIndex) => (
-              <Tile
-                key={`r${rIndex}c${cIndex}`}
-                data={tileData}
-                xCoord={cIndex}
-                yCoord={rIndex}
-                setTile={setTile}
-              />
-            ))}
-          </div>
-        ))}
+    <>
+      <ScoreBoard currentTurn={currentPlayer} />
+      <div id="board" className="boardItem">
+        <HelpCenter />
+        <div id="gameBoard">
+          {expandBoard(boardData).map((row, rIndex) => (
+            <div key={`r${rIndex}`} className="row">
+              {row.map((tileData, cIndex) => (
+                <Tile
+                  key={`r${rIndex}c${cIndex}`}
+                  data={tileData}
+                  xCoord={cIndex}
+                  yCoord={rIndex}
+                  setTile={setTile}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
