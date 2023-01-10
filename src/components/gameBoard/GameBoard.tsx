@@ -3,7 +3,11 @@ import HelpCenter from "../helpCenter/HelpCenter";
 import Tile from "./tile/Tile";
 import InitialGameBoard from "../../api/initialGameBoard.json";
 import { PlayerEnum } from "../../models/playerEnum";
-import { expandBoard, flattenBoard } from "./util/BoardUtilities";
+import {
+  expandBoard,
+  flattenBoard,
+  // isNextPlacementValid,
+} from "./util/BoardUtilities";
 import { validateTile } from "./tile/util/Validation";
 import { TileMetaData } from "./models/TileMetaData";
 import ScoreBoard from "../scoreboard/ScoreBoard";
@@ -19,6 +23,7 @@ const GameBoard = () => {
     //Only set the tile if it is currently invalid
     if (!validateTile(fullBoard[y][x].value)) {
       fullBoard[y][x].value = currentPlayer;
+      // isNextPlacementValid(fullBoard, currentPlayer);
       setBoardData(flattenBoard(fullBoard));
     }
 
@@ -30,7 +35,7 @@ const GameBoard = () => {
   };
 
   useEffect(() => {
-    setCurrentPlayer(PlayerEnum.PLAYER_WHITE);
+    setCurrentPlayer(PlayerEnum.PLAYER_BLACK);
 
     //Initialize the 2d game board to store metadata for each tile
     let initialBoard = InitialGameBoard.initialBoard.map<TileMetaData[]>(
@@ -38,11 +43,12 @@ const GameBoard = () => {
         return row.map<TileMetaData>((col) => {
           return {
             value: col,
-            isValidPlacement: Math.floor(Math.random() * 10) / 2 === 0,
+            isValidPlacement: false,
           };
         });
       }
     );
+    // isNextPlacementValid(initialBoard, currentPlayer);
     setBoardData(flattenBoard(initialBoard));
   }, []);
 
