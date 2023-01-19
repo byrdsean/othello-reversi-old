@@ -2,7 +2,7 @@ import { PlayerEnum } from "../../../../models/playerEnum";
 
 export const validateTile = (validate: number) => {
   return (
-    validate == PlayerEnum.PLAYER_BLACK || validate == PlayerEnum.PLAYER_WHITE
+    validate === PlayerEnum.PLAYER_BLACK || validate === PlayerEnum.PLAYER_WHITE
   );
 };
 
@@ -19,4 +19,10 @@ export const setDiscType = (value: number) => {
 
 export const setValidTileCallout = (isValidPlacement: boolean): String => {
   return isValidPlacement ? "isValid" : "";
+};
+
+export const getOpposingPlayer = (currentPlayer: PlayerEnum): PlayerEnum => {
+  return currentPlayer === PlayerEnum.PLAYER_BLACK
+    ? PlayerEnum.PLAYER_WHITE
+    : PlayerEnum.PLAYER_BLACK;
 };

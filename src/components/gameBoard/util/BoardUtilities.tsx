@@ -1,6 +1,6 @@
 import { PlayerEnum } from "../../../models/playerEnum";
 import { TileMetaData } from "../models/TileMetaData";
-import { validateTile } from "../tile/util/Validation";
+import { validateTile, getOpposingPlayer } from "../tile/util/Validation";
 
 const MAX_BOARD_LENGTH: number = 8;
 
@@ -21,38 +21,41 @@ export const expandBoard = (flat: TileMetaData[]): TileMetaData[][] => {
   return board;
 };
 
-// export const isNextPlacementValid = (
-//   board: TileMetaData[][],
-//   player: PlayerEnum
-// ): TileMetaData[][] => {
-//   for (let r = 0; r < MAX_BOARD_LENGTH; r++) {
-//     for (let c = 0; c < MAX_BOARD_LENGTH; c++) {
-//       if (validateTile(board[r][c].value) && board[r][c].value === player) {
-//         checkSurroundingTiles(r - 1, c - 1, board);
-//       } else {
-//         board[r][c].isValidPlacement = false;
-//       }
-//     }
-//   }
-//   return board;
-// };
+//Check if the new tile being placed is next to a tile of the opposing color
+export const isNextPlacementValid = (
+  x: number,
+  y: number,
+  board: TileMetaData[][],
+  player: PlayerEnum
+): boolean => {
+  if (validateTile(board[y][x].value)) {
+    return false;
+  }
 
-// export const checkSurroundingTiles = (
-//   startRow: number,
-//   startColumn: number,
-//   board: TileMetaData[][]
-// ): void => {
-//   for (let r = startRow; r < startRow + 3; r++) {
-//     for (let c = startColumn; c < startColumn + 3; c++) {
-//       if (
-//         0 <= r &&
-//         r <= MAX_BOARD_LENGTH &&
-//         0 <= c &&
-//         c <= MAX_BOARD_LENGTH &&
-//         !validateTile(board[r][c].value)
-//       ) {
-//         board[r][c].isValidPlacement = true;
-//       }
-//     }
-//   }
-// };
+  const isValidY = (y_index: number): boolean => {
+    return 0 <= y_index && y_index < board.length;
+  };
+
+  const isValidX = (x_index: number, y_index: number): boolean => {
+    return (
+      0 <= x_index &&
+      x_index < board[y_index].length &&
+      !(x_index === x && y_index === y)
+    );
+  };
+
+  const opposingPlayer: PlayerEnum = getOpposingPlayer(player);
+  for (let scrollY = y - 1; scrollY <= y + 1; scrollY++) {
+    if (!isValidY(scrollY)) continue;
+
+    for (let scrollX = x - 1; scrollX <= x + 1; scrollX++) {
+      if (!isValidX(scrollX, scrollY)) continue;
+
+      if (board[scrollY][scrollX].value === opposingPlayer) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+};

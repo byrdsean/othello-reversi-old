@@ -6,9 +6,8 @@ import { PlayerEnum } from "../../models/playerEnum";
 import {
   expandBoard,
   flattenBoard,
-  // isNextPlacementValid,
+  isNextPlacementValid,
 } from "./util/BoardUtilities";
-import { validateTile } from "./tile/util/Validation";
 import { TileMetaData } from "./models/TileMetaData";
 import ScoreBoard from "../scoreboard/ScoreBoard";
 
@@ -21,17 +20,16 @@ const GameBoard = () => {
     let fullBoard: TileMetaData[][] = expandBoard(boardData);
 
     //Only set the tile if it is currently invalid
-    if (!validateTile(fullBoard[y][x].value)) {
+    if (isNextPlacementValid(x, y, fullBoard, currentPlayer)) {
       fullBoard[y][x].value = currentPlayer;
-      // isNextPlacementValid(fullBoard, currentPlayer);
       setBoardData(flattenBoard(fullBoard));
-    }
 
-    setCurrentPlayer(
-      currentPlayer === PlayerEnum.PLAYER_WHITE
-        ? PlayerEnum.PLAYER_BLACK
-        : PlayerEnum.PLAYER_WHITE
-    );
+      setCurrentPlayer(
+        currentPlayer === PlayerEnum.PLAYER_WHITE
+          ? PlayerEnum.PLAYER_BLACK
+          : PlayerEnum.PLAYER_WHITE
+      );
+    }
   };
 
   useEffect(() => {
