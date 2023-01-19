@@ -13,7 +13,7 @@ const ScoreBoard: React.FC<ScoreMetaData> = ({ currentTurn }) => {
       </div>
       <div id="turn" className="turnPanel">
         <h2>
-          {`${currentTurn === PlayerEnum.PLAYER_BLACK ? "Computer" : "Your"}`}{" "}
+          {`${currentTurn === PlayerEnum.PLAYER_BLACK ? "Your" : "Computer"}`}{" "}
           Turn
         </h2>
       </div>
